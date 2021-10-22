@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "./App.css";
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense, lazy, useState } from "react";
 
 import { Switch, Route, Redirect } from "react-router-dom";
 import routes from "./routes/routes";
@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { authOperations } from "./redux/auth";
 
 import Preloader from "./components/Preloader/Preloader";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 const homeView = lazy(() => import("./views/Main"));
 const regView = lazy(() => import("./views/Register"));
@@ -19,6 +21,7 @@ const loginView = lazy(() => import("./views/Login"));
 const userView = lazy(() => import("./views/User"));
 
 function App({ histry }) {
+  // const [fields, setFields] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch.authOperations.getCurrentUser();
@@ -27,13 +30,7 @@ function App({ histry }) {
   return (
     <div className="App">
       <header>
-        <NavLink to="/home" exact>
-          Home
-        </NavLink>
-        <NavLink to="/register" exact>
-          Register
-        </NavLink>
-        <NavLink to="/login"> Login</NavLink>
+        <Header />
       </header>
       <main>
         <Suspense fallback={<Preloader />}>
@@ -66,20 +63,7 @@ function App({ histry }) {
         </Suspense>
       </main>
       <footer>
-        <a
-          href="https://www.linkedin.com/in/vitalii-chervonyi/"
-          target="_blank"
-          style={{
-            position: "fixed",
-            left: "0px",
-            bottom: "0px",
-            height: "30px",
-            width: "100%",
-            backgroundColor: "grey",
-          }}
-        >
-          Creator's linkedin
-        </a>
+        <Footer />
       </footer>
     </div>
   );
