@@ -1,75 +1,176 @@
-import React, { useEffect } from "react";
+/* eslint-disable default-case */
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import { Container, Button, Form, FormGroup, Input } from "reactstrap";
-// import classNames from "classnames";
-import PropTypes from "prop-types";
-import { mapToCssModules, tagPropType } from "../../core/utils/reactstrapUtils";
+import { useDispatch } from "react-redux";
+import { authOperations } from "../../redux/auth";
 
-const FormImage = ({ formHeading, fields, isError, setIsLoading }) => {
-  const { name, secondName, email, password, birthdate } = fields;
+const FormImage = ({
+  formHeading,
+  nameFieldRender,
+  secondNameFieldRender,
+  emailFieldRender,
+  passwordFieldRender,
+  birthdateFieldRender,
+  isError,
+  setIsLoading,
+}) => {
+  const [name, setName] = useState("");
+  const [secondName, setSecondName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [birthdate, setBirthdate] = useState("");
 
-  useEffect(() => {
-    fields.name = false;
-    fields.secondName = false;
-    fields.email = false;
-    fields.password = false;
-    fields.birthdate = false;
-  }, []);
+  const dispatch = useDispatch();
+
+  console.log(
+    formHeading,
+    nameFieldRender,
+    secondNameFieldRender,
+    emailFieldRender,
+    passwordFieldRender,
+    birthdateFieldRender
+  );
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+
+      case "secondName":
+        setSecondName(value);
+        break;
+
+      case "email":
+        setEmail(value);
+        break;
+
+      case "password":
+        setPassword(value);
+        break;
+
+      case "birthdate":
+        setBirthdate(value);
+        break;
+
+      default:
+        return;
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userInfo = {
+      name,
+      secondName,
+      email,
+      password,
+      birthdate,
+    };
+
+    setName(name);
+    setSecondName(secondName);
+    setEmail(email);
+    setPassword(password);
+    setBirthdate(birthdate);
+
+    switch (formHeading) {
+      case "Registration":
+        dispatch(
+          authOperations.register({
+            name,
+            secondName,
+            email,
+            password,
+            birthdate,
+          })
+        );
+        break;
+
+      case "Login":
+        dispatch(
+          authOperations.logIn({
+            email,
+            password,
+          })
+        );
+        break;
+    }
+
+    setName("");
+    setSecondName("");
+    setEmail("");
+    setPassword("");
+    setBirthdate("");
+  };
 
   return (
     <Container>
-      <Form>
-        {fields.name && (
+      <Form onSubmit={handleSubmit}>
+        {nameFieldRender && (
           <FormGroup>
             <Input
               className="mblank-2 my-2 w-320"
               type="text"
               name="name"
+              value={name}
               id="name"
               placeholder="Name"
+              onChange={handleChange}
             />
           </FormGroup>
         )}
-        {fields.secondName && (
+        {secondNameFieldRender && (
           <FormGroup>
             <Input
               className="mblank-2 my-2"
               type="text"
-              name="secondname"
+              name="secondName"
+              value={secondName}
               id="secondname"
               placeholder="Second name"
+              onChange={handleChange}
             />
           </FormGroup>
         )}
-        {fields.email && (
+        {emailFieldRender && (
           <FormGroup>
             <Input
               className="mblank-2 my-2"
               type="email"
               name="email"
+              value={email}
               id="email"
               placeholder="Email"
+              onChange={handleChange}
             />
           </FormGroup>
         )}
-        {fields.password && (
+        {passwordFieldRender && (
           <FormGroup>
             <Input
               className="mblank-2 my-2"
               type="password"
               name="password"
+              value={password}
               id="Password"
               placeholder="Password "
+              onChange={handleChange}
             />
           </FormGroup>
         )}
-        {fields.birthdate && (
+        {birthdateFieldRender && (
           <FormGroup>
             <Input
               className="mblank-2 my-2"
               type="date"
-              name="date"
-              id="date"
+              name="birthdate"
+              value={birthdate}
+              id="birthdate"
               placeholder="Birthdate"
+              onChange={handleChange}
             />
           </FormGroup>
         )}
@@ -77,40 +178,6 @@ const FormImage = ({ formHeading, fields, isError, setIsLoading }) => {
       </Form>
     </Container>
   );
-};
-
-FormImage.propTypes = {
-  children: PropTypes.node,
-  // type can be things like text, password, (typical input types) as well as select and textarea, providing children as you normally would to those.
-  type: PropTypes.string,
-  size: PropTypes.string,
-  bsSize: PropTypes.string,
-  // state: deprecated(PropTypes.string, 'Please use the prop "valid"'),
-  valid: PropTypes.bool, // applied the is-valid class when true, does nothing when false
-  invalid: PropTypes.bool, // applied the is-invalid class when true, does nothing when false
-  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  // ref will only get you a reference to the Input component, use innerRef to get a reference to the DOM input (for things like focus management).
-  // static: deprecated(PropTypes.bool, 'Please use the prop "plaintext"'),
-  plaintext: PropTypes.bool,
-  addon: PropTypes.bool,
-  className: PropTypes.string,
-  cssModule: PropTypes.object,
-  inline: PropTypes.bool,
-  // Pass in a Component to override default element
-  innerRef: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-    PropTypes.string,
-  ]),
-  // Applid the row class when true, does nothing when false
-  row: PropTypes.bool,
-  // Applied the form-check class when true, form-group when false
-  check: PropTypes.bool,
-  // Applied the disabled class when the check and disabled props are true, does nothing when false
-  disabled: PropTypes.bool,
-  // Pass in a Component to override default element
-  // Pass in a Component to override default element
-  color: PropTypes.string, // default: 'muted'
 };
 
 export default FormImage;

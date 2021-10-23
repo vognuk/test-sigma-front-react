@@ -1,17 +1,24 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import withForm from "../hoc/withForm";
 import FormImage from "../components/FormImage/FormImage";
-import fields from "../core/constants/fields";
 
 const Register = () => {
-  const { name, secondName, email, password, birthdate } = fields;
-  fields.name = true;
-  fields.secondName = true;
-  fields.email = true;
-  fields.password = true;
-  fields.birthdate = true;
+  const [nameFieldRender, setNameFieldRender] = useState(true);
+  const [secondNameFieldRender, setSecondNameFieldRender] = useState(true);
+  const [emailFieldRender, setEmailFieldRender] = useState(true);
+  const [passwordFieldRender, setPasswordFieldRender] = useState(true);
+  const [birthdateFieldRender, setBirthdateFieldRender] = useState(true);
 
-  const WithFormRegister = withForm("Registration", FormImage, fields);
+  const WithFormRegister = withForm(
+    "Registration",
+    FormImage,
+    nameFieldRender,
+    secondNameFieldRender,
+    emailFieldRender,
+    passwordFieldRender,
+    birthdateFieldRender
+  );
 
   return <WithFormRegister />;
 };

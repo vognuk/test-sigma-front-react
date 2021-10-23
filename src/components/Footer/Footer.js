@@ -20,7 +20,7 @@ const Footer = () => {
         target="_blank"
         color="faded"
       >
-        <FiLinkedin />
+        {/* <FiLinkedin /> */}
       </NavLink>
       <FiLinkedin />
     </div>

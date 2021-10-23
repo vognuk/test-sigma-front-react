@@ -1,7 +1,4 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-// import contactsReducer from "./contacts/contactsReducer";
-// import notificationReducer from "./notification/notificationsReducer";
-// import loading from "./contacts/contactsReducer";
 import {
   persistStore,
   persistReducer,
@@ -32,8 +29,6 @@ const authPersistConfig = {
 const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
-    // contacts: contactsReducer,
-    // notification: notificationReducer,
   },
   // loading,
   middleware,
