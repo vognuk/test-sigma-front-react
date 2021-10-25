@@ -1,7 +1,7 @@
 import axios from "axios";
 import authActions from "./authActions";
 
-axios.defaults.baseURL = "https://goit-phonebook-api.herokuapp.com";
+axios.defaults.baseURL = "http://localhost:3000"
 
 const token = {
   set(token) {
@@ -21,7 +21,7 @@ const token = {
 const register = (credentials) => async (dispatch) => {
   dispatch(authActions.registerRequest());
   try {
-    const response = await axios.post("/users/signup", credentials);
+    const response = await axios.post("/api/users/register", credentials);
     token.set(response.data.token);
     dispatch(authActions.registerSuccess(response.data));
   } catch (error) {
@@ -44,7 +44,7 @@ const logIn = (credentials) => async (dispatch) => {
   dispatch(authActions.loginRequest());
 
   try {
-    const response = await axios.post("/users/login", credentials);
+    const response = await axios.post("/api/users/login", credentials);
     token.set(response.data.token);
     dispatch(authActions.loginSuccess(response.data));
   } catch (error) {
@@ -63,7 +63,7 @@ const logIn = (credentials) => async (dispatch) => {
 const logOut = () => async (dispatch) => {
   dispatch(authActions.logoutRequest());
   try {
-    await axios.post("/users/logout");
+    await axios.post("/api/users/logout");
     token.unset();
     dispatch(authActions.logoutSuccess());
   } catch (error) {
