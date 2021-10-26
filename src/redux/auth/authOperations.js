@@ -1,7 +1,7 @@
 import axios from "axios";
 import authActions from "./authActions";
 
-axios.defaults.baseURL = "https://goit-phonebook-api.herokuapp.com";
+axios.defaults.baseURL = "http://localhost:3000";
 
 const token = {
   set(token) {
@@ -12,16 +12,10 @@ const token = {
   },
 };
 
-/*
- * POST @ /users/signup
- * body { name, email, password }
- *
- * После успешной регистрации добавляем токен в HTTP-заголовок
- */
 const register = (credentials) => async (dispatch) => {
   dispatch(authActions.registerRequest());
   try {
-    const response = await axios.post("/users/signup", credentials);
+    const response = await axios.post("/api/users/register", credentials);
     token.set(response.data.token);
     dispatch(authActions.registerSuccess(response.data));
   } catch (error) {
@@ -33,18 +27,11 @@ const register = (credentials) => async (dispatch) => {
   }
 };
 
-/*
- * POST @ /users/login
- * body:
- *    { email, password }
- *
- * После успешного логина добавляем токен в HTTP-заголовок
- */
 const logIn = (credentials) => async (dispatch) => {
   dispatch(authActions.loginRequest());
 
   try {
-    const response = await axios.post("/users/login", credentials);
+    const response = await axios.post("/api/users/login", credentials);
     token.set(response.data.token);
     dispatch(authActions.loginSuccess(response.data));
   } catch (error) {
@@ -53,17 +40,10 @@ const logIn = (credentials) => async (dispatch) => {
   }
 };
 
-/*
- * POST @ /users/logout
- * headers:
- *    Authorization: Bearer token
- *
- * 1. После успешного логаута, удаляем токен из HTTP-заголовка
- */
 const logOut = () => async (dispatch) => {
   dispatch(authActions.logoutRequest());
   try {
-    await axios.post("/users/logout");
+    await axios.post("/api/users/logout");
     token.unset();
     dispatch(authActions.logoutSuccess());
   } catch (error) {
@@ -75,15 +55,6 @@ const logOut = () => async (dispatch) => {
   }
 };
 
-/*
- * GET @ /users/current
- * headers:
- *    Authorization: Bearer token
- *
- * 1. Забираем токен из стейта через getState()
- * 2. Если токена нет, выходим не выполняя никаких операций
- * 3. Если токен есть, добавляет его в HTTP-заголовок и выполянем операцию
- */
 const getCurrentUser = () => async (dispatch, getState) => {
   const {
     auth: { token: persistedToken },

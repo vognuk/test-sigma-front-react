@@ -8,8 +8,8 @@ import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import { NavLink } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
-import { authOperations } from "./redux/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { authSelectors, authOperations } from "./redux/auth";
 
 import Preloader from "./components/Preloader/Preloader";
 import Header from "./components/Header/Header";
@@ -21,16 +21,21 @@ const loginView = lazy(() => import("./views/Login"));
 const userView = lazy(() => import("./views/User"));
 
 function App({ histry }) {
+  const [loged, setLoged] = useState(true);
+  const isAuthenticated = useSelector((state) =>
+    authSelectors.getIsAuthenticated(state)
+  );
+
   // const [fields, setFields] = useState();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    // dispatch.authOperations.getCurrentUser();
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch.authOperations.getCurrentUser();
+  // }, []);
 
   return (
     <div className="App">
       <header>
-        <Header />
+        <Header setLoged={setLoged} />
       </header>
       <main>
         <Suspense fallback={<Preloader />}>

@@ -23,15 +23,6 @@ const FormImage = ({
 
   const dispatch = useDispatch();
 
-  console.log(
-    formHeading,
-    nameFieldRender,
-    secondNameFieldRender,
-    emailFieldRender,
-    passwordFieldRender,
-    birthdateFieldRender
-  );
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
